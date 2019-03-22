@@ -3,10 +3,7 @@ import {Card, CardImg, CardText, CardBody,CardTitle, Breadcrumb, BreadcrumbItem}
 import { Link } from 'react-router-dom';
 
 function RenderDish({ dish }) {
-
-
-
-        if (dish != null) {
+    if (dish != null) {
             return (
                 <Card >
                     <CardImg top src={dish.image} alt={dish.name} />
@@ -21,7 +18,7 @@ function RenderDish({ dish }) {
             return (
                 <div></div>
             );
-    }
+}
 function RenderComments({ comments }) {
         if (comments != null) {
 
