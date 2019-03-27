@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 
 function RenderDish({ dish }) {
     if (dish != null) {
@@ -24,7 +25,7 @@ function RenderDish({ dish }) {
             <div></div>
         );
 }
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
     if (comments != null) {
 
         const com = comments.map((c) => {
@@ -45,6 +46,7 @@ function RenderComments({ comments }) {
                 <ul className="list-unstyled">
                     {com}
                 </ul>
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         );
     }
@@ -79,8 +81,10 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        // console.log('Current State is: ' + JSON.stringify(values));
+        // alert('Current State is: ' + JSON.stringify(values));
         // event.preventDefault();
     }
     render() {
@@ -108,9 +112,9 @@ class CommentForm extends Component {
 
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="name" className="col-12" >Your Name</Label>
+                                <Label htmlFor="author" className="col-12" >Your Name</Label>
 
-                                <Control.text model=".name" id="name" name="name"
+                                <Control.text model=".author" id="author" name="author"
                                     placeholder="Your Name"
                                     className="form-control col-12"
                                     validators={{
@@ -152,7 +156,25 @@ class CommentForm extends Component {
     }
 }
 const DishDetail = (props) => {
-
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dish != null) 
     return (
         <div className="container">
             <div className="row">
@@ -171,8 +193,11 @@ const DishDetail = (props) => {
                     <RenderDish dish={props.dish} />
                 </div>
                 <div className="col-12 col-md-5 m-1">
-                    <RenderComments comments={props.comments} />
-                    <CommentForm />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
+                    
                 </div>
             </div>
         </div>
