@@ -16,7 +16,7 @@ function RenderLeader({ leader }) {
                     {leader.designation}
                 </Media>
                 <Media text className="my-3 ">
-                    {leader.description}
+                    {leader.description} 
                 </Media>
 
             </Media>
