@@ -3,21 +3,22 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, CardTitle, Medi
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components';
 function RenderLeader({ leader }) {
 
     return (
-        <Media >
-            <Media left className="col-2 ">
+        <Media style={{display:'flex'}}>
+            <Media left className="col-2">
                 <Media object src={baseUrl + leader.image} alt={leader.abbr} />
             </Media>
-            <Media body className="col-9 ">
+            <Media body className="col-9">
                 <Media heading>
                     {leader.name}
                 </Media>
-                <Media title className="mt-3  ">
+                <Media title className="mt-3">
                     {leader.designation}
                 </Media>
-                <Media text className="my-3 ">
+                <Media text className="my-3">
                     {leader.description} 
                 </Media>
 
@@ -41,15 +42,18 @@ function About(props) {
         );
     }
     else {
-    return (props.leaders.leaders.map((leader) => {
-        return (
-            <div key={leader.id}>
-                <RenderLeader leader={leader} />
+        return <Stagger in>
+        {props.leaders.leaders.map((leader) => {
+            return (
+                <Fade in>
+                <div key={leader.id}>
+                    <RenderLeader leader={leader} />
 
-            </div>
-            // <p>Leader {leader.designation}</p> 
-        );
-    })); 
+                </div>
+                </Fade>
+            )
+        })}
+        </Stagger>
     } 
 
     }
