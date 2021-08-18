@@ -143,7 +143,7 @@ export const addPromos = (promos) => ({
     type: ActionTypes.ADD_PROMOS,
     payload: promos
 });
-
+//Task - 1
 export const fetchLeaders = () => (dispatch) => {
     
     dispatch(leadersLoading());
@@ -180,3 +180,31 @@ export const leadersFailed = (errmess) => ({
     type: ActionTypes.LEADERS_FAILED,
     payload: errmess
 });
+//Task - 2
+export const postFeedback = (values)  =>(dispatch)=> {
+    return fetch(baseUrl + 'feedback', {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(response => { 
+      alert('Thank you for your feedback!\n'+JSON.stringify(response)); 
+    })
+    .catch(error =>  { console.log('post feedback', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
+};
